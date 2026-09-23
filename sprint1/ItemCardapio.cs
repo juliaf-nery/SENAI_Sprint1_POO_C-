@@ -11,6 +11,14 @@ namespace sprint1
         protected string descricao;
         protected double precoBase;
 
+        // Construtor padrão
+        public ItemCardapio()
+        {
+            this.codigo = 0;
+            this.descricao = string.Empty;
+            this.precoBase = 0.0;
+        }
+
         // Constructor 
         public ItemCardapio(int codigo, string descricao, double precoBase)
         {
