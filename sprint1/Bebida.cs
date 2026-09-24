@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace sprint1
 {
@@ -13,28 +16,30 @@ namespace sprint1
         // Construtor padrão
         public Bebida() : base() { }
 
-        public Bebida? MostrarCardapioBebidas()
+        // Retorna a bebida selecionada e o tamanho escolhido (null se inválido)
+        public (Bebida? bebida, string? tamanho) MostrarCardapioBebidas(Lanche? lancheSelecionado = null)
         {
-            // Criando os itens do cardápio usando o construtor com parâmetros
-            Bebida b1 = new Bebida(1, "Soda italiana de Limão", 8.50);
-            Bebida b2 = new Bebida(2, "Suco de Laranja", 7.00);
-            Bebida b3 = new Bebida(3, "Suco de Pêssego", 7.00);
-            Bebida b4 = new Bebida(4, "Suco de Morango", 7.50);
-            Bebida b5 = new Bebida(5, "Milkshake de Nutella", 15.00);
-            Bebida b6 = new Bebida(6, "Milkshake de Baunilha", 13.50);
-            Bebida b7 = new Bebida(7, "Milkshake de Doce de Leite", 14.00);
-            Bebida b8 = new Bebida(8, "Água mineral", 5.00);
+            List<Bebida> cardapioBebidas = new List<Bebida>
+            {
+                new Bebida(1, "Soda italiana de Limão", 8.50),
+                new Bebida(2, "Suco de Laranja", 7.00),
+                new Bebida(3, "Suco de Pêssego", 7.00),
+                new Bebida(4, "Suco de Morango", 7.50),
+                new Bebida(5, "Milkshake de Nutella", 15.00),
+                new Bebida(6, "Milkshake de Baunilha", 13.50),
+                new Bebida(7, "Milkshake de Doce de Leite", 14.00),
+                new Bebida(8, "Água mineral", 5.00)
+            };
 
+            Thread.Sleep(500);
             Console.Clear();
-            Console.WriteLine("═══════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ ℬℯ𝒷𝒾𝒹𝒶s𝓈 ═══════════");
-            Console.WriteLine($"\n{b1.getCodigo()}. {b1.getDescricao()} - R$ {b1.getPrecoBase():F2}");
-            Console.WriteLine($"{b2.getCodigo()}. {b2.getDescricao()} - R$ {b2.getPrecoBase():F2}");
-            Console.WriteLine($"{b3.getCodigo()}. {b3.getDescricao()} - R$ {b3.getPrecoBase():F2}");
-            Console.WriteLine($"{b4.getCodigo()}. {b4.getDescricao()} - R$ {b4.getPrecoBase():F2}");
-            Console.WriteLine($"{b5.getCodigo()}. {b5.getDescricao()} - R$ {b5.getPrecoBase():F2}");
-            Console.WriteLine($"{b6.getCodigo()}. {b6.getDescricao()} - R$ {b6.getPrecoBase():F2}");
-            Console.WriteLine($"{b7.getCodigo()}. {b7.getDescricao()} - R$ {b7.getPrecoBase():F2}");
-            Console.WriteLine($"{b8.getCodigo()}. {b8.getDescricao()} - R$ {b8.getPrecoBase():F2}");
+
+            Console.WriteLine("════════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ ℬ℮𝒷𝒾𝒷𝒶s ════════════\n");
+
+            foreach (var bebidas in cardapioBebidas.Where(l => l.getCodigo() <= 8))
+            {
+                Console.WriteLine($"{bebidas.getCodigo()}. {bebidas.getDescricao()} - R$ {bebidas.getPrecoBase():F2}");
+            }
 
             Console.Write("\nEscolha uma opção: ");
             string? input = Console.ReadLine();
@@ -42,23 +47,73 @@ namespace sprint1
             if (!int.TryParse(input, out int escolha))
             {
                 Console.WriteLine("Opção inválida.");
-                return null;
+                return (null, null);
             }
 
-            switch (escolha)
+            Bebida? bebidaSelecionada = cardapioBebidas.FirstOrDefault(b => b.getCodigo() == escolha);
+            if (bebidaSelecionada == null)
             {
-                case 1: return b1;
-                case 2: return b2;
-                case 3: return b3;
-                case 4: return b4;
-                case 5: return b5;
-                case 6: return b6;
-                case 7: return b7;
-                case 8: return b8;
+                Console.WriteLine("Opção inválida.");
+                return (null, null);
+            }
+
+            string tamanhoEscolhido = "Padrão";
+
+            // Se não for água (código 8), solicitar tamanho
+            if (bebidaSelecionada.getCodigo() != 8)
+            {
+                tamanhoEscolhido = TamanhoBebida(bebidaSelecionada);
+            }
+
+            // Mensagem final incluindo a torta (se houver)
+            if (lancheSelecionado != null)
+            {
+                Console.WriteLine($"{lancheSelecionado.getDescricao()} e {bebidaSelecionada.getDescricao()} ({tamanhoEscolhido}) foram adicionados ao seu carrinho.");
+            }
+            else
+            {
+                Console.WriteLine($"{bebidaSelecionada.getDescricao()} ({tamanhoEscolhido}) foi adicionado ao seu carrinho.");
+            }
+
+            return (bebidaSelecionada, tamanhoEscolhido);
+        }
+
+        // Seleciona o tamanho e ajusta o preço da bebida; retorna string representando o tamanho
+        public string TamanhoBebida(Bebida bebida)
+        {
+            Thread.Sleep(500);
+            Console.Clear();
+            Console.WriteLine("\nEscolha o tamanho da bebida:\n");
+            Console.WriteLine("P (300ml) - Padrão");
+            Console.WriteLine("M (500ml) - + R$4,00");
+            Console.WriteLine("G (700ml) - + R$6,00");
+
+            Console.Write("\nEscolha uma opção (P/M/G): ");
+            string? opcaoTamanho = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(opcaoTamanho))
+            {
+                Console.WriteLine("Tamanho padrão selecionado.");
+                return "Padrão";
+            }
+
+            switch (opcaoTamanho.Trim().ToUpper())
+            {
+                case "P":
+                    bebida.SetPrecoBase(bebida.getPrecoBase());
+                    return "P (300ml)";
+                case "M":
+                    bebida.SetPrecoBase(bebida.getPrecoBase() + 4.00);
+                    return "M (500ml)";
+                case "G":
+                    bebida.SetPrecoBase(bebida.getPrecoBase() + 6.00);
+                    return "G (700ml)";
                 default:
-                    Console.WriteLine("Opção inválida.");
-                    return null;
+                    Console.WriteLine("Opção inválida. O tamanho padrão será selecionado.");
+                    bebida.SetPrecoBase(bebida.getPrecoBase());
+                    return "Padrão";
             }
         }
+
     }
 }

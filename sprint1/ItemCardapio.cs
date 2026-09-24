@@ -31,5 +31,8 @@ namespace sprint1
         public int getCodigo() { return codigo; }
         public string getDescricao() { return descricao; }
         public double getPrecoBase() { return precoBase; }
+
+        // Permite atualizar o preço base (usado para tamanhos de bebida)
+        public void SetPrecoBase(double novoPreco) { this.precoBase = novoPreco; }
     }
 }

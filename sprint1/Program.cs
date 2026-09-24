@@ -9,7 +9,28 @@ namespace sprint1
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Console.WriteLine("═══════════ ℬℯ𝓂-𝓋𝒾𝓃𝒹ℴ(𝒶) 𝒶 𝒹ℴ𝒸ℯ𝓇𝒾𝒶 ℰ́𝒹ℯ𝒟ℴ𝒸ℯ!  ════════════");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("███████╗██████╗░███████╗██████╗░░█████╗░░█████╗░███████╗");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("█████╗░░██║░░██║█████╗░░██║░░██║██║░░██║██║░░╚═╝█████╗░░");
+            
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("██╔══╝░░██║░░██║██╔══╝░░██║░░██║██║░░██║██║░░██╗██╔══╝░░");
+            
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("███████╗██████╔╝███████╗██████╔╝╚█████╔╝╚█████╔╝███████╗");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("╚══════╝╚═════╝░╚══════╝╚═════╝░░╚════╝░░╚════╝░╚══════╝");
+
+
+            Console.ResetColor();
+
+            Console.WriteLine("═══════════ ℬℯ𝓂-𝓋𝒾𝓃𝒹ℴ(𝒶) 𝒶 𝒹ℴ𝒸ℯ𝓇𝒾𝒶 ℰ́𝒹ℯ𝒟ℴ𝒜ℯ! ════════════");
             Console.WriteLine("\nAcesse nosso menu abaixo:");
             Console.WriteLine("\nDigite 1 para acessar o cardápio de lanches");
             Console.WriteLine("Digite 2 para acessar o cardápio de bebidas");
@@ -23,11 +44,16 @@ namespace sprint1
             {
                 case "1":
                     Lanche menuLanche = new Lanche();
-                    menuLanche.MostrarCardapioLanches();
+                    Lanche? lancheSelecionado = menuLanche.MostrarCardapioLanches();
+                    if (lancheSelecionado != null)
+                    {
+                        Bebida menuBebida = new Bebida();
+                        menuBebida.MostrarCardapioBebidas(lancheSelecionado);
+                    }
                     break;
                 case "2":
-                    Bebida menuBebida = new Bebida();
-                    menuBebida.MostrarCardapioBebidas();
+                    Bebida menuBebidaSolo = new Bebida();
+                    menuBebidaSolo.MostrarCardapioBebidas();
                     break;
                 case "3":
                     break;
@@ -42,5 +68,6 @@ namespace sprint1
         }
     }
 }
+
 
 
