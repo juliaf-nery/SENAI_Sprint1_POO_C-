@@ -16,8 +16,7 @@ namespace sprint1
         // Construtor padrão
         public Bebida() : base() { }
 
-        // Retorna a bebida selecionada e o tamanho escolhido (null se inválido)
-        public (Bebida? bebida, string? tamanho) MostrarCardapioBebidas(Lanche? lancheSelecionado = null)
+        public void MostrarCardapioBebidas(List<Lanche>? tortasSelecionadas = null)
         {
             List<Bebida> cardapioBebidas = new List<Bebida>
             {
@@ -31,58 +30,149 @@ namespace sprint1
                 new Bebida(8, "Água mineral", 5.00)
             };
 
-            Thread.Sleep(500);
-            Console.Clear();
+            List<(Bebida bebida, string tamanho)> selecionadas = new List<(Bebida, string)>();
 
-            Console.WriteLine("════════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ ℬ℮𝒷𝒾𝒷𝒶s ════════════\n");
-
-            foreach (var bebidas in cardapioBebidas.Where(l => l.getCodigo() <= 8))
+            while (true)
             {
-                Console.WriteLine($"{bebidas.getCodigo()}. {bebidas.getDescricao()} - R$ {bebidas.getPrecoBase():F2}");
+                Thread.Sleep(300);
+                Console.Clear();
+                Console.WriteLine("════════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ ℬ℮𝒷𝒾𝒷𝒶s ════════════\n");
+
+                foreach (var bebidas in cardapioBebidas)
+                {
+                    Console.WriteLine($"{bebidas.getCodigo()}. {bebidas.getDescricao()} - R$ {bebidas.getPrecoBase():F2}");
+                }
+
+                Console.Write("\nEscolha uma opção: ");
+                string? input = Console.ReadLine();
+
+                if (!int.TryParse(input, out int escolha))
+                {
+                    Console.WriteLine("Entrada inválida. Digite o código da bebida.");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                Bebida? bebidaSelecionada = cardapioBebidas.FirstOrDefault(b => b.getCodigo() == escolha);
+                if (bebidaSelecionada == null)
+                {
+                    Console.WriteLine("Bebida não encontrada. Tente novamente.");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                string tamanhoEscolhido = "Padrão";
+                if (bebidaSelecionada.getCodigo() != 8)
+                {
+                    tamanhoEscolhido = TamanhoBebida(bebidaSelecionada);
+                }
+
+                selecionadas.Add((bebidaSelecionada, tamanhoEscolhido));
+                Carrinho.AddItem(bebidaSelecionada.getDescricao(), bebidaSelecionada.getPrecoBase(), tamanhoEscolhido);
+
+                while (true)
+                {
+                    Console.Write("\nGostaria de adicionar mais uma bebida? (sim/não): ");
+                    string? resp = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(resp))
+                    {
+                        Console.WriteLine("Resposta inválida. Digite 'sim' ou 'não'.");
+                        continue;
+                    }
+
+                    resp = resp.Trim().ToLower();
+                    if (resp == "sim" || resp == "s")
+                    {
+                        // volta ao loop externo para escolher outra bebida
+                        break;
+                    }
+                    else if (resp == "não" || resp == "n")
+                    {
+                        if (tortasSelecionadas != null && tortasSelecionadas.Any())
+                        {
+                            MostrarResumo(tortasSelecionadas, selecionadas);
+                            Program.Sair();
+                            return;
+                        }
+
+                        // Pergunta se quer escolher uma torta apenas quando não veio do menu de lanches
+                        while (true)
+                        {
+                            Console.Write("\nGostaria de escolher uma torta? (sim/não): ");
+                            string? respTorta = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(respTorta))
+                            {
+                                Console.WriteLine("Resposta inválida. Digite 'sim' ou 'não'.");
+                                continue;
+                            }
+
+                            respTorta = respTorta.Trim().ToLower();
+                            if (respTorta == "sim" || respTorta == "s")
+                            {
+                                // Chama o cardápio de tortas, passando lista de bebidas selecionadas para que Lanche.cs não pergunte se quer escolher alguma bebida
+                                Lanche menuLanche = new Lanche();
+                                var bebidasSimples = selecionadas.Select(s => s.bebida).ToList();
+                                menuLanche.MostrarCardapioLanches(bebidasSimples);
+                                Program.Sair();
+
+                                // Após retornar do cardápio de tortas, mostra o resumo atual do pedido
+                                MostrarResumo(null, selecionadas);
+                                Program.Sair();
+                                return;
+                            }
+                            else if (respTorta == "não" || respTorta == "nao" || respTorta == "n")
+                            {
+                                // Finaliza e mostra resumo do pedido
+                                MostrarResumo(null, selecionadas);
+                                Program.Sair();
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Resposta inválida. Digite 'sim' ou 'não'.");
+                                continue;
+                            }
+                        }
+
+                        // sai do loop de 'mais bebida' para reiniciar o fluxo se necessário
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Resposta inválida. Digite 'sim' ou 'não'.");
+                        continue;
+                    }
+                }
+
+                // se aqui significa que usuário escolheu 'sim' para adicionar mais — o loop externo recomeça
+            }
+        }
+
+        // Exibe resumo das escolhas do pedido, incluindo tortas e bebidas selecionadas
+        private void MostrarResumo(List<Lanche>? tortas, List<(Bebida bebida, string tamanho)> bebidas)
+        {
+            Console.WriteLine("\nItens adicionados ao carrinho:");
+            if (tortas != null && tortas.Any())
+            {
+                foreach (var t in tortas)
+                {
+                    Console.WriteLine($"- {t.getDescricao()} - R$ {t.getPrecoBase():F2}");
+                }
             }
 
-            Console.Write("\nEscolha uma opção: ");
-            string? input = Console.ReadLine();
-
-            if (!int.TryParse(input, out int escolha))
+            if (bebidas != null && bebidas.Any())
             {
-                Console.WriteLine("Opção inválida.");
-                return (null, null);
+                foreach (var b in bebidas)
+                {
+                    Console.WriteLine($"- {b.bebida.getDescricao()} ({b.tamanho}) - R$ {b.bebida.getPrecoBase():F2}");
+                }
             }
-
-            Bebida? bebidaSelecionada = cardapioBebidas.FirstOrDefault(b => b.getCodigo() == escolha);
-            if (bebidaSelecionada == null)
-            {
-                Console.WriteLine("Opção inválida.");
-                return (null, null);
-            }
-
-            string tamanhoEscolhido = "Padrão";
-
-            // Se não for água (código 8), solicitar tamanho
-            if (bebidaSelecionada.getCodigo() != 8)
-            {
-                tamanhoEscolhido = TamanhoBebida(bebidaSelecionada);
-            }
-
-            // Mensagem final incluindo a torta (se houver)
-            if (lancheSelecionado != null)
-            {
-                Console.WriteLine($"{lancheSelecionado.getDescricao()} e {bebidaSelecionada.getDescricao()} ({tamanhoEscolhido}) foram adicionados ao seu carrinho.");
-            }
-            else
-            {
-                Console.WriteLine($"{bebidaSelecionada.getDescricao()} ({tamanhoEscolhido}) foi adicionado ao seu carrinho.");
-            }
-
-            return (bebidaSelecionada, tamanhoEscolhido);
         }
 
         // Seleciona o tamanho e ajusta o preço da bebida; retorna string representando o tamanho
         public string TamanhoBebida(Bebida bebida)
         {
             Thread.Sleep(500);
-            Console.Clear();
             Console.WriteLine("\nEscolha o tamanho da bebida:\n");
             Console.WriteLine("P (300ml) - Padrão");
             Console.WriteLine("M (500ml) - + R$4,00");

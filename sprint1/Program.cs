@@ -9,65 +9,81 @@ namespace sprint1
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("███████╗██████╗░███████╗██████╗░░█████╗░░█████╗░███████╗");
+            bool running = true;
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝");
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("█████╗░░██║░░██║█████╗░░██║░░██║██║░░██║██║░░╚═╝█████╗░░");
-            
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("██╔══╝░░██║░░██║██╔══╝░░██║░░██║██║░░██║██║░░██╗██╔══╝░░");
-            
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("███████╗██████╔╝███████╗██████╔╝╚█████╔╝╚█████╔╝███████╗");
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("╚══════╝╚═════╝░╚══════╝╚═════╝░░╚════╝░░╚════╝░╚══════╝");
-
-
-            Console.ResetColor();
-
-            Console.WriteLine("═══════════ ℬℯ𝓂-𝓋𝒾𝓃𝒹ℴ(𝒶) 𝒶 𝒹ℴ𝒸ℯ𝓇𝒾𝒶 ℰ́𝒹ℯ𝒟ℴ𝒜ℯ! ════════════");
-            Console.WriteLine("\nAcesse nosso menu abaixo:");
-            Console.WriteLine("\nDigite 1 para acessar o cardápio de lanches");
-            Console.WriteLine("Digite 2 para acessar o cardápio de bebidas");
-            Console.WriteLine("Digite 3 para acessar o carrinho");
-            Console.WriteLine("Digite 4 para sair");
-
-            Console.Write("\nDigite a opção desejada: ");
-            string opcao = Console.ReadLine()!;
-
-            switch (opcao)
+            while (running)
             {
-                case "1":
-                    Lanche menuLanche = new Lanche();
-                    Lanche? lancheSelecionado = menuLanche.MostrarCardapioLanches();
-                    if (lancheSelecionado != null)
-                    {
-                        Bebida menuBebida = new Bebida();
-                        menuBebida.MostrarCardapioBebidas(lancheSelecionado);
-                    }
-                    break;
-                case "2":
-                    Bebida menuBebidaSolo = new Bebida();
-                    menuBebidaSolo.MostrarCardapioBebidas();
-                    break;
-                case "3":
-                    break;
-                case "4":
-                    Console.WriteLine("Obrigado por visitar a doceria ℰ́𝒹ℯ𝒟ℴ𝒸ℯ! Até logo!");
-                    break;
-                default:
-                    Console.WriteLine("Opção inválida. Digite um dos valores do menu por favor.");
-                    break;
-            }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("███████╗██████╗░███████╗██████╗░░█████╗░░█████╗░███████╗");
 
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("█████╗░░██║░░██║█████╗░░██║░░██║██║░░██║██║░░╚═╝█████╗░░");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("██╔══╝░░██║░░██║██╔══╝░░██║░░██║██║░░██║██║░░██╗██╔══╝░░");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("███████╗██████╔╝███████╗██████╔╝╚█████╔╝╚█████╔╝███████╗");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("╚══════╝╚═════╝░╚══════╝╚═════╝░░╚════╝░░╚════╝░╚══════╝");
+
+
+                Console.ResetColor();
+
+                Console.WriteLine("═══════════ ℰ́𝒹ℯ𝒟ℴ𝒸ℯ ════════════");
+                Console.WriteLine("\nAcesse nosso menu abaixo:");
+                Console.WriteLine("\nDigite 1 para acessar o cardápio de lanches");
+                Console.WriteLine("Digite 2 para acessar o cardápio de bebidas");
+                Console.WriteLine("Digite 3 para acessar o carrinho");
+                Console.WriteLine("Digite 0 para sair");
+
+                Console.Write("\nDigite a opção desejada: ");
+                string opcao = Console.ReadLine()!;
+
+                switch (opcao)
+                {
+                    case "1":
+                        Lanche menuLanche = new Lanche();
+                        menuLanche.MostrarCardapioLanches();
+                        break;
+                    case "2":
+                        Bebida menuBebidaSolo = new Bebida();
+                        menuBebidaSolo.MostrarCardapioBebidas();
+                        break;
+                    case "3":
+                        Carrinho.MostrarCarrinho();
+                        break;
+                    case "0":
+                        Console.WriteLine("Obrigado por visitar a doceria  ℰ́𝒹ℯ𝒟ℴ𝒸ℯ! Até logo!");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida. Digite um dos valores do menu por favor.");
+                        Sair();
+                        break;
+                }
+
+                Console.Clear();
+            }
         }
+
+        public static void Sair()
+        {
+            Console.WriteLine("\nPressione ENTER para retornar ao menu principal...");
+            Console.ReadLine();
+            Thread.Sleep(700);
+            Console.Clear();
+        }
+
+       
+
     }
 }
+
 
 
 
