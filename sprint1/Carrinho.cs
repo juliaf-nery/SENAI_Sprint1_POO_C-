@@ -83,54 +83,68 @@ namespace sprint1
 
         private static void Checkout(double total)
         {
-            Console.WriteLine("\nEscolha a forma de pagamento: ");
-            Console.WriteLine("1. Pix");
-            Console.WriteLine("2. Cartão");
-            Console.Write("Opção: ");
-            string? metodo = Console.ReadLine();
-
-            if (metodo == "1" || string.Equals(metodo, "pix", StringComparison.OrdinalIgnoreCase))
+            while (true)
             {
-                Console.WriteLine("Pagamento por Pix selecionado.");
-                Console.Write("Informe a chave Pix (ou Enter para pular): ");
-                string? chave = Console.ReadLine();
-                Console.WriteLine($"Pagamento via Pix confirmado. Valor: R$ {total:F2}");
-                itens.Clear();
-                Program.Sair();
-                return;
-            }
+                Console.WriteLine("\nEscolha a forma de pagamento: ");
+                Console.WriteLine("1. Pix");
+                Console.WriteLine("2. Cartão");
+                Console.Write("Opção: ");
+                string? metodo = Console.ReadLine();
 
-            if (metodo == "2" || string.Equals(metodo, "cartao", StringComparison.OrdinalIgnoreCase) || string.Equals(metodo, "cartão", StringComparison.OrdinalIgnoreCase))
-            {
-                while (true)
+                if (string.IsNullOrWhiteSpace(metodo))
                 {
-                    Console.Write("Cartão - débito ou crédito? (débito/crédito): ");
-                    string? tipo = Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(tipo)) { Console.WriteLine("Resposta inválida."); continue; }
-                    tipo = tipo.Trim().ToLower();
-                    if (tipo == "débito" || tipo == "d")
+                    Console.WriteLine("Opção de pagamento invalida. Por favor escolha uma das opções acima.");
+                    continue;
+                }
+
+                metodo = metodo.Trim();
+
+                if (metodo == "1" || string.Equals(metodo, "pix", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("\nPagamento por Pix selecionado.");
+                    Console.Write("Informe a chave Pix: ");
+                    string? chave = Console.ReadLine();
+
+                    Console.WriteLine($"Pagamento via Pix confirmado. Valor: R$ {total:F2}");
+                    itens.Clear();
+                    Program.Sair();
+                    return;
+                }
+                else if (metodo == "2" || string.Equals(metodo, "cartao", StringComparison.OrdinalIgnoreCase) || string.Equals(metodo, "cartão", StringComparison.OrdinalIgnoreCase))
+                {
+                    while (true)
                     {
-                        Console.WriteLine($"Pagamento no débito confirmado. Valor: R$ {total:F2}");
-                        itens.Clear();
-                        Program.Sair();
-                        return;
-                    }
-                    else if (tipo == "crédito" || tipo == "c")
-                    {
-                        Console.WriteLine($"Pagamento no crédito confirmado. Valor: R$ {total:F2}");
-                        itens.Clear();
-                        Program.Sair();
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Opção inválida. Digite 'débito' ou 'crédito'.");
+                        Console.Write("\nCartão - débito ou crédito? (débito/crédito): ");
+                        string? tipo = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(tipo)) { Console.WriteLine("Resposta inválida."); continue; }
+                        tipo = tipo.Trim().ToLower();
+                        if (tipo == "débito" || tipo == "d")
+                        {
+                            Console.WriteLine($"Pagamento no débito confirmado. Valor: R$ {total:F2}");
+                            itens.Clear();
+                            Program.Sair();
+                            return;
+                        }
+                        else if (tipo == "crédito" || tipo == "c")
+                        {
+                            Console.WriteLine($"Pagamento no crédito confirmado. Valor: R$ {total:F2}");
+                            itens.Clear();
+                            Program.Sair();
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Opção inválida. Digite 'débito' ou 'crédito'.");
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Opção de pagamento invalida. Por favor escolha uma das opções acima.");
+                    // volta para reencontrar a forma de pagamento
+                    continue;
+                }
             }
-
-            Console.WriteLine("Opção de pagamento inválida. Retornando ao menu.");
-            Program.Sair();
         }
     }
 }

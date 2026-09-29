@@ -148,26 +148,6 @@ namespace sprint1
             }
         }
 
-        // Exibe resumo das escolhas do pedido, incluindo tortas e bebidas selecionadas
-        private void MostrarResumo(List<Lanche>? tortas, List<(Bebida bebida, string tamanho)> bebidas)
-        {
-            Console.WriteLine("\nItens adicionados ao carrinho:");
-            if (tortas != null && tortas.Any())
-            {
-                foreach (var t in tortas)
-                {
-                    Console.WriteLine($"- {t.getDescricao()} - R$ {t.getPrecoBase():F2}");
-                }
-            }
-
-            if (bebidas != null && bebidas.Any())
-            {
-                foreach (var b in bebidas)
-                {
-                    Console.WriteLine($"- {b.bebida.getDescricao()} ({b.tamanho}) - R$ {b.bebida.getPrecoBase():F2}");
-                }
-            }
-        }
 
         // Seleciona o tamanho e ajusta o preço da bebida; retorna string representando o tamanho
         public string TamanhoBebida(Bebida bebida)
@@ -202,6 +182,27 @@ namespace sprint1
                     Console.WriteLine("Opção inválida. O tamanho padrão será selecionado.");
                     bebida.SetPrecoBase(bebida.getPrecoBase());
                     return "Padrão";
+            }
+        }
+
+        // Exibe resumo das escolhas do pedido, incluindo tortas e bebidas selecionadas
+        private void MostrarResumo(List<Lanche>? tortas, List<(Bebida bebida, string tamanho)> bebidas)
+        {
+            Console.WriteLine("\nItens adicionados ao carrinho:");
+            if (tortas != null && tortas.Any())
+            {
+                foreach (var t in tortas)
+                {
+                    Console.WriteLine($"- {t.getDescricao()} - R$ {t.getPrecoBase():F2}");
+                }
+            }
+
+            if (bebidas != null && bebidas.Any())
+            {
+                foreach (var b in bebidas)
+                {
+                    Console.WriteLine($"- {b.bebida.getDescricao()} ({b.tamanho}) - R$ {b.bebida.getPrecoBase():F2}");
+                }
             }
         }
 

@@ -73,7 +73,7 @@ namespace sprint1
 
         public static void Sair()
         {
-            Console.WriteLine("\nPressione ENTER para retornar ao menu principal...");
+            Console.Write("\nPressione ENTER para retornar ao menu principal...");
             Console.ReadLine();
             Thread.Sleep(700);
             Console.Clear();
