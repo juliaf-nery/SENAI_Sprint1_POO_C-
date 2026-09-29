@@ -43,8 +43,16 @@ namespace sprint1
                     Console.WriteLine($"{bebidas.getCodigo()}. {bebidas.getDescricao()} - R$ {bebidas.getPrecoBase():F2}");
                 }
 
+                Console.WriteLine("\nPara retornar ao menu principal digite 'cancelar'");
                 Console.Write("\nEscolha uma opção: ");
                 string? input = Console.ReadLine();
+
+                if (input == "cancelar")
+                {
+                    Thread.Sleep(700);
+                    Program.Sair();
+                    return;
+                }
 
                 if (!int.TryParse(input, out int escolha))
                 {
@@ -61,7 +69,7 @@ namespace sprint1
                     continue;
                 }
 
-                string tamanhoEscolhido = "Padrão";
+                string tamanhoEscolhido = "- Padrão";
                 if (bebidaSelecionada.getCodigo() != 8)
                 {
                     tamanhoEscolhido = TamanhoBebida(bebidaSelecionada);

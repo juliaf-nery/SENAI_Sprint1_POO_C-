@@ -37,7 +37,7 @@ namespace sprint1
                 Thread.Sleep(500);
                 Console.Clear();
 
-            Console.WriteLine("════════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ 𝒯ℴ𝓇𝓉𝒶𝓈 ════════════");
+            Console.WriteLine("════════════ 𝒞𝒶𝓇𝒹𝒶́𝓅𝒾ℴ 𝒹ℯ 𝒯ℴ𝓇𝓉𝒶𝓈  ════════════");
 
                 // Exibição automática dos doces (códigos 1 a 5)
                 Console.WriteLine("\nTortas Doces:");
@@ -53,13 +53,21 @@ namespace sprint1
                     Console.WriteLine($"{item.getCodigo()}. {item.getDescricao()} - R$ {item.getPrecoBase():F2}");
                 }
 
+                Console.WriteLine("\nPara retornar ao menu principal digite 'cancelar'");
                 Console.Write("\nEscolha uma opção: ");
                 string? input = Console.ReadLine();
+
+                if (input == "cancelar")
+                {
+                    Thread.Sleep(700);
+                    Program.Sair();
+                    return null;
+                }
 
                 if (!int.TryParse(input, out int escolha))
                 {
                     Console.WriteLine("Entrada inválida. Digite o código da torta.");
-                    Program.Sair();
+                    Thread.Sleep(1000);
                     continue;
                 }
 
@@ -67,7 +75,7 @@ namespace sprint1
                 if (lancheSelecionado == null)
                 {
                     Console.WriteLine("Torta não encontrada. Tente novamente.");
-                    Program.Sair();
+                    Thread.Sleep(1000);
                     continue;
                 }
 
@@ -92,7 +100,7 @@ namespace sprint1
                         // Volta ao loop externo para escolher outra torta
                         break;
                     }
-                    else if (resposta == "não" || resposta == "nao" || resposta == "n")
+                    else if (resposta == "não" || resposta == "n")
                     {
                         // Se este método foi chamado a partir do menu de bebidas (bebidasSelecionadas != null),
                         // não perguntar sobre bebidas aqui; apenas finalizar.
@@ -126,7 +134,7 @@ namespace sprint1
                                 Program.Sair();
                                 return selecionados.FirstOrDefault();
                             }
-                            else if (respBebida == "não" || respBebida == "nao" || respBebida == "n")
+                            else if (respBebida == "não" || respBebida == "n")
                             {
                                 // Caso o usuário não queira adicionar mais tortas nem bebidas, exibe os itens selecionados e retorna
                                 Console.WriteLine($"\nItens adicionados ao carrinho:");

@@ -34,7 +34,7 @@ namespace sprint1
 
                 Console.ResetColor();
 
-                Console.WriteLine("═══════════ ℰ́𝒹ℯ𝒟ℴ𝒸ℯ ════════════");
+                Console.WriteLine("═══════════════════════ ℰ́𝒹ℯ𝒟ℴ𝒸ℯ! ═══════════════════════");
                 Console.WriteLine("\nAcesse nosso menu abaixo:");
                 Console.WriteLine("\nDigite 1 para acessar o cardápio de lanches");
                 Console.WriteLine("Digite 2 para acessar o cardápio de bebidas");
