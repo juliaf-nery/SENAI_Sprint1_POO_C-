@@ -59,7 +59,7 @@ namespace sprint1
 
                 if (input == "cancelar")
                 {
-                    Thread.Sleep(700);
+                    Thread.Sleep(600);
                     Program.Sair();
                     return null;
                 }
@@ -131,7 +131,7 @@ namespace sprint1
                                 Bebida menuBebida = new Bebida();
                                 // chama o cardápio de bebidas junto da lista de tortas selecionadas
                                 menuBebida.MostrarCardapioBebidas(selecionados);
-                                Program.Sair();
+                                
                                 return selecionados.FirstOrDefault();
                             }
                             else if (respBebida == "não" || respBebida == "n")
